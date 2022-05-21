@@ -1,5 +1,5 @@
-import { getUser } from 'core/users/services'
-import { ListUsersResponseDTO } from 'core/users/types'
+import { getRepos } from 'core/repos/services'
+import { UserReposReponseDTO } from 'core/repos/types'
 import { FilterBuilder } from 'core/shared/builders';
 import React, { useCallback, useEffect, useState } from 'react'
 
@@ -7,9 +7,9 @@ type Props = {
   login: string | undefined
 }
 
-export default function UseUserQuery({ login }: Props) {
+export default function UseUserReposQuery({ login }: Props) {
   const [query, setQuery] = useState('');
-  const [list, setList] = useState<ListUsersResponseDTO>();
+  const [list, setList] = useState<UserReposReponseDTO>();
   const [loading, setLoading] = useState(true);
 
   const getPage = useCallback(
@@ -17,7 +17,7 @@ export default function UseUserQuery({ login }: Props) {
       setLoading(true)
       const filterBuilder = new FilterBuilder();
 
-      await getUser({ onSuccess: setList }, { login }, filterBuilder.dto);
+      await getRepos({ onSuccess: setList }, { login, offset }, filterBuilder.dto);
       setLoading(false)
     }, [query])
 
